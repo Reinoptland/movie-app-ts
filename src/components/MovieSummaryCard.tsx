@@ -1,5 +1,6 @@
 import React, { ReactElement } from "react";
 import { TMovieSummary } from "../entities/movies";
+import { Link } from "react-router-dom";
 
 interface Props extends TMovieSummary {}
 
@@ -17,7 +18,9 @@ const posterStyles = {
 export default function MovieSummaryCard(props: Props): ReactElement {
   return (
     <div style={styles}>
-      <h3>{props.Title}</h3>
+      <Link to={`/movies/${props.imdbID}`}>
+        <h3>{props.Title}</h3>
+      </Link>
       <p>
         ({props.Type}: {props.Year})
       </p>
