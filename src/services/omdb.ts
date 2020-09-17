@@ -1,4 +1,4 @@
-import { TMovieSummary } from "../entities/movies";
+import { TMovieDetails, TMovieSummary } from "../entities/movies";
 
 const baseUrl: string = "http://www.omdbapi.com/";
 const apiKey = process.env.REACT_APP_OMDB_API_KEY;
@@ -10,22 +10,29 @@ const formatQuery = (queryKey: string, queryValue: string): string => {
   return `${baseUrl}/?${queryKey}=${encodedValue}&apikey=${apiKey}`;
 };
 
-const getMovieFactory = (queryKey: string) => {
-  return (queryValue: string): Promise<TApiResultSearch> =>
+const getMovieFactory = <T>(queryKey: string) => {
+  return (queryValue: string): Promise<T> =>
     fetch(formatQuery(queryKey, queryValue)).then((res) => res.json());
 };
 
-// export const getMovieById = getMovieFactory("i");
-// export const getMovieByTitle = getMovieFactory("t");
-export const searchMoviesByTitle = getMovieFactory("s");
+export const getMovieById = getMovieFactory<TDetailsResponse>("i");
+export const getMovieByTitle = getMovieFactory<TDetailsResponse>("t");
+export const searchMoviesByTitle = getMovieFactory<TSearchResponse>("s");
 
-type TApiResultSearch =
-  | {
-      Response: "True";
-      Search: TMovieSummary[];
-      totalResults: string;
-    }
-  | {
-      Response: "False";
-      Error: string;
-    };
+type TErrorResponse = {
+  Response: "False";
+  Error: string;
+};
+
+interface TDetailsSuccessResponse extends TMovieDetails {
+  Response: "True";
+}
+
+type TSearchSuccessResponse = {
+  Response: "True";
+  Search: TMovieSummary[];
+  totalResults: string;
+};
+
+type TDetailsResponse = TDetailsSuccessResponse | TErrorResponse;
+type TSearchResponse = TSearchSuccessResponse | TErrorResponse;
