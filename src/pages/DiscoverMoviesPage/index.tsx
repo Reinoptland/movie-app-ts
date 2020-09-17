@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import "./style.css";
+
 import { TMovieSummary } from "../../entities/movies";
 import { searchMoviesByTitle } from "../../services/omdb";
 import DiscoverResult from "./DiscoverResult";
@@ -27,6 +29,10 @@ export default (props: Props) => {
   const [status, setStatus] = useState<TfetchStatus>({ status: "idle" });
 
   const search = async () => {
+    setStatus({ status: "loading" });
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     try {
       const response = await searchMoviesByTitle(searchText);
 

@@ -1,0 +1,15 @@
+.results {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -10px;
+  animation: fadein 1s;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

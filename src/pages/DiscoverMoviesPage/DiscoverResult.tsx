@@ -12,7 +12,7 @@ export default function DiscoverResult(props: Props): ReactElement {
   switch (props.status.status) {
     case "success":
       return (
-        <div>
+        <div className="results">
           {props.status.data.map((movieSummary) => {
             return (
               <MovieSummaryCard key={movieSummary.imdbID} {...movieSummary} />
