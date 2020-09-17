@@ -34,5 +34,3 @@ export default function DiscoverResult(props: Props): ReactElement {
       return <></>;
   }
 }
-
-const renderResult = () => {};

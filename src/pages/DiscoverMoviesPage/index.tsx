@@ -6,8 +6,6 @@ import { TMovieSummary } from "../../entities/movies";
 import { searchMoviesByTitle } from "../../services/omdb";
 import DiscoverResult from "./DiscoverResult";
 
-interface Props {}
-
 export type TfetchStatus =
   | {
       status: "loading";
@@ -24,12 +22,14 @@ export type TfetchStatus =
       error: string;
     };
 
-export default (props: Props) => {
+export default () => {
   const [searchText, setSearchText] = useState("");
-  const [status, setStatus] = useState<TfetchStatus>({ status: "idle" });
+  const [searchState, setSearchState] = useState<TfetchStatus>({
+    status: "idle",
+  });
 
   const search = async () => {
-    setStatus({ status: "loading" });
+    setSearchState({ status: "loading" });
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -37,12 +37,15 @@ export default (props: Props) => {
       const response = await searchMoviesByTitle(searchText);
 
       if (response.Response === "True") {
-        setStatus({ status: "success", data: response.Search });
+        setSearchState({ status: "success", data: response.Search });
       } else {
-        setStatus({ status: "failed", error: response.Error });
+        setSearchState({ status: "failed", error: response.Error });
       }
     } catch (error) {
-      setStatus({ status: "failed", error: "something went wrong, try again" });
+      setSearchState({
+        status: "failed",
+        error: "something went wrong, try again",
+      });
     }
   };
 
@@ -58,7 +61,7 @@ export default (props: Props) => {
           <button onClick={search}>Search</button>
         </p>
       </div>
-      <DiscoverResult status={status} />
+      <DiscoverResult status={searchState} />
     </div>
   );
 };

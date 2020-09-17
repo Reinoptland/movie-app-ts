@@ -2,12 +2,10 @@ import React, { ReactElement } from "react";
 import "./style.css";
 import logo from "./logo.svg";
 
-interface Props {}
-
-export default function Spinner({}: Props): ReactElement {
+export default function Spinner(): ReactElement {
   return (
     <div className="spinner">
-      <img src={logo}></img>
+      <img src={logo} alt="loading"></img>
     </div>
   );
 }

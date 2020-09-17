@@ -1,14 +1,12 @@
 import React, { ReactElement } from "react";
 import { NavLink } from "react-router-dom";
 
-interface Props {}
-
 const activeStyles = {
   fontweight: "bold",
   color: "red",
 };
 
-export default function NavBar({}: Props): ReactElement {
+export default function NavBar(): ReactElement {
   return (
     <nav>
       <NavLink activeStyle={activeStyles} exact to="/">
