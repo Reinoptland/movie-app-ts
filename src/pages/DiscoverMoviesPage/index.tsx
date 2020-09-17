@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+
 import { TMovieSummary } from "../../entities/movies";
 import { searchMoviesByTitle } from "../../services/omdb";
+import DiscoverResult from "./DiscoverResult";
 
 interface Props {}
 
-type TfetchStatus =
+export type TfetchStatus =
   | {
       status: "loading";
     }
@@ -38,52 +40,19 @@ export default (props: Props) => {
     }
   };
 
-  const searchControls = (
-    <div>
-      <h1>Discover some movies!</h1>
-      <p>
-        <input
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-        />
-        <button onClick={search}>Search</button>
-      </p>
-    </div>
-  );
-
-  const renderResult = () => {
-    switch (status.status) {
-      case "success":
-        return (
-          <div>
-            {status.data.map((moviesummary) => {
-              return (
-                <div key={moviesummary.imdbID}>
-                  <img src={moviesummary.Poster} alt={moviesummary.Title} />
-                </div>
-              );
-            })}
-          </div>
-        );
-
-      case "failed":
-        return <div>{status.error}</div>;
-
-      case "idle":
-        return null;
-
-      case "loading":
-        return <div>Loading</div>;
-
-      default:
-        return null;
-    }
-  };
-
   return (
     <div>
-      {searchControls}
-      {renderResult()}
+      <div>
+        <h1>Discover some movies!</h1>
+        <p>
+          <input
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+          <button onClick={search}>Search</button>
+        </p>
+      </div>
+      <DiscoverResult status={status} />
     </div>
   );
 };
