@@ -40,7 +40,6 @@ export default () => {
 
     if (params.searchText === "" || params.searchText === undefined) return;
 
-    setsearchInput(params.searchText);
     setSearchState({ status: "loading" });
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -64,6 +63,12 @@ export default () => {
   useEffect(() => {
     search();
   }, [search]);
+
+  useEffect(() => {
+    if (params.searchText !== searchInput) {
+      setsearchInput(params.searchText);
+    }
+  }, [params.searchText, searchInput]);
 
   const addToHistory = () => {
     history.push(`/discover/${encodeURIComponent(searchInput)}`);
