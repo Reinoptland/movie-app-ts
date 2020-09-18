@@ -12,4 +12,5 @@ export type TMoviesState = {
 
 export type TStore = {
   appState: TAppState;
+  movieState: TMoviesState;
 };
