@@ -30,14 +30,17 @@ type TParams = {
 export default () => {
   const history = useHistory();
   const params = useParams<TParams>();
+  const [searchInput, setsearchInput] = useState(params.searchText || "");
   const [searchState, setSearchState] = useState<TfetchStatus>({
     status: "idle",
   });
 
   const search = useCallback(async () => {
     // todo: manipulate history
+
     if (params.searchText === "" || params.searchText === undefined) return;
 
+    setsearchInput(params.searchText);
     setSearchState({ status: "loading" });
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -62,18 +65,20 @@ export default () => {
     search();
   }, [search]);
 
+  const addToHistory = () => {
+    history.push(`/discover/${encodeURIComponent(searchInput)}`);
+  };
+
   return (
     <div>
       <div>
         <h1>Discover some movies!</h1>
         <p>
           <input
-            value={params.searchText || ""}
-            onChange={(e) =>
-              history.push(`/discover/${encodeURIComponent(e.target.value)}`)
-            }
+            value={searchInput}
+            onChange={(e) => setsearchInput(e.target.value)}
           />
-          <button onClick={search}>Search</button>
+          <button onClick={addToHistory}>Search</button>
         </p>
       </div>
       <DiscoverResult status={searchState} />
