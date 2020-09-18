@@ -1,11 +1,15 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { appDoneLoading, appLoading } from "../../store/appState/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 import "./style.css";
 
 import { TMovieSummary } from "../../entities/movies";
 import { searchMoviesByTitle } from "../../services/omdb";
 import DiscoverResult from "./DiscoverResult";
+import { searchMoviesThunk } from "../../store/movies/actions";
+import { selectSearchResults } from "../../store/movies/selectors";
 
 export type TfetchStatus =
   | {
@@ -28,56 +32,25 @@ type TParams = {
 };
 
 export default () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const params = useParams<TParams>();
-  console.log(params);
   const [searchInput, setsearchInput] = useState(
     params.searchText === undefined ? "" : params.searchText
   );
 
-  console.log(searchInput);
-  const [searchState, setSearchState] = useState<TfetchStatus>({
-    status: "idle",
-  });
-
-  // useCallback, this function should only be redefined if any of its dependencies change
-  const search = useCallback(async () => {
-    // todo: manipulate history
-
-    if (params.searchText === "" || params.searchText === undefined) return;
-
-    setSearchState({ status: "loading" });
-
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    try {
-      const response = await searchMoviesByTitle(params.searchText);
-
-      if (response.Response === "True") {
-        setSearchState({ status: "success", data: response.Search });
-      } else {
-        setSearchState({ status: "failed", error: response.Error });
-      }
-    } catch (error) {
-      setSearchState({
-        status: "failed",
-        error: "something went wrong, try again",
-      });
-    }
-  }, [params.searchText]); // 1 dependency, searchText
+  const allResults = useSelector(selectSearchResults);
+  const resultsForCurrentQuery = allResults[params.searchText];
 
   useEffect(() => {
-    search();
-  }, [search]); // run this effect once, and run it again if the search function changes, run this effect again
+    dispatch(searchMoviesThunk(params.searchText));
+  }, [dispatch, params.searchText]);
 
   useEffect(() => {
-    if (params.searchText !== searchInput && params.searchText !== undefined) {
-      setsearchInput(params.searchText);
-    }
-  }, [params.searchText, searchInput]); // if params.searchText or search
+    setsearchInput(params.searchText || "");
+  }, [params.searchText]); // if params.searchText
 
   const addToHistory = () => {
-    console.log(searchInput);
     history.push(`/discover/${encodeURIComponent(searchInput)}`);
   };
 
@@ -93,7 +66,7 @@ export default () => {
           <button onClick={addToHistory}>Search</button>
         </p>
       </div>
-      <DiscoverResult status={searchState} />
+      <DiscoverResult summaries={resultsForCurrentQuery} />
     </div>
   );
 };

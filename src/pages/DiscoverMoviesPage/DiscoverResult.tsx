@@ -3,34 +3,21 @@ import { TfetchStatus } from "./index";
 import MovieSummaryCard from "../../components/MovieSummaryCard";
 import Spinner from "../../components/Spinner";
 import DiscoverError from "./DiscoverError";
+import { TMovieSummary } from "../../entities/movies";
 
 interface Props {
-  status: TfetchStatus;
+  summaries: TMovieSummary[];
 }
 
 export default function DiscoverResult(props: Props): ReactElement {
-  switch (props.status.status) {
-    case "success":
-      return (
-        <div className="results">
-          {props.status.data.map((movieSummary) => {
-            return (
-              <MovieSummaryCard key={movieSummary.imdbID} {...movieSummary} />
-            );
-          })}
-        </div>
-      );
-
-    case "failed":
-      return <DiscoverError error={props.status.error} />;
-
-    case "idle":
-      return <></>;
-
-    case "loading":
-      return <Spinner />;
-
-    default:
-      return <></>;
-  }
+  return (
+    <div className="results">
+      {props.summaries &&
+        props.summaries.map((movieSummary) => {
+          return (
+            <MovieSummaryCard key={movieSummary.imdbID} {...movieSummary} />
+          );
+        })}
+    </div>
+  );
 }

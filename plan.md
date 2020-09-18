@@ -18,3 +18,29 @@ Dynamic routing -> andere data laten op basis van url
 - [] wanneer de pagina geladen wordt, moeten we een zoekopdracht uitvoeren met de query uit de url
   - useParams
   - useEffect
+
+## Shared app state
+
+- [] is de app aan het laden -> synchronous action
+- [] tokens! is iemand ingelogd
+- [] data die gefetched is uit de api -> asynchronous actions
+
+## Todo:
+
+- [x] Setup
+  - deps installeren
+  - store initializeren
+  - mappen structuur
+- [] Appstate
+  - Loading
+    - [x] Store typen
+    - Actie maken: APP_LOADING
+    - Actie moeten `dispatchen`
+    - Reducer logica -> Hoe moet een APP_LOADING actie worden de state veranderen
+    - Selector schrijven om de state van de app aan een component door te geven
+    - Appstate in componenten gebruiken
+
+## As a developer I don't want my app to refetch data it already has, so we don't sponsor AWS needlessly
+
+- [] Fetching logica in een actie neerzetten en uit het component halen (seperation of concerns)
+- [] Zoekopdrachten & resultaten opslaan in redux en niet opnieuw fetchen
