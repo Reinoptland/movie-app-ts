@@ -18,3 +18,18 @@ Dynamic routing -> andere data laten op basis van url
 - [] wanneer de pagina geladen wordt, moeten we een zoekopdracht uitvoeren met de query uit de url
   - useParams
   - useEffect
+
+## Shared app state
+
+- [] is de app aan het laden -> synchronous action
+- [] tokens! is iemand ingelogd
+- [] data die gefetched is uit de api -> asynchronous actions
+
+## Todo:
+
+- [] Setup
+  - deps installeren
+  - store initializeren
+  - mappen structuur
+- [] Appstate
+  - Loading & Error
