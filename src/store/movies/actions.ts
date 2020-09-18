@@ -1,5 +1,5 @@
 import { TMovieSummary } from "../../entities/movies";
-import { TAppState } from "../../entities/store";
+import { TAppState, TStore } from "../../entities/store";
 import { searchMoviesByTitle } from "../../services/omdb";
 import { appDoneLoading, appLoading } from "../appState/actions";
 
@@ -16,11 +16,10 @@ type TsearchSuccess = {
 export type TMoviesActions = TsearchSuccess;
 
 export const searchMoviesThunk = (searchText: string) => {
-  // return a thunk
-  return async (dispatch: (action: any) => void, getState: () => TAppState) => {
-    // todo implement check if we already have the data
+  return async (dispatch: (action: any) => void, getState: () => TStore) => {
     const state = getState();
-    // console.log("CURRENT STATE OF THE STORE", state);
+
+    if (state.movieState.search[searchText] !== undefined) return;
 
     dispatch(appLoading);
 

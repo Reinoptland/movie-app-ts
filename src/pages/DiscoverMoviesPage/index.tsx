@@ -39,7 +39,8 @@ export default () => {
     params.searchText === undefined ? "" : params.searchText
   );
 
-  const searchResults = useSelector(selectSearchResults)[params.searchText];
+  const allResults = useSelector(selectSearchResults);
+  const resultsForCurrentQuery = allResults[params.searchText];
 
   useEffect(() => {
     dispatch(searchMoviesThunk(params.searchText));
@@ -65,7 +66,7 @@ export default () => {
           <button onClick={addToHistory}>Search</button>
         </p>
       </div>
-      <DiscoverResult summaries={searchResults} />
+      <DiscoverResult summaries={resultsForCurrentQuery} />
     </div>
   );
 };
