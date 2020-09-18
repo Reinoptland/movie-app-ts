@@ -30,11 +30,17 @@ type TParams = {
 export default () => {
   const history = useHistory();
   const params = useParams<TParams>();
-  const [searchInput, setsearchInput] = useState(params.searchText || "");
+  console.log(params);
+  const [searchInput, setsearchInput] = useState(
+    params.searchText === undefined ? "" : params.searchText
+  );
+
+  console.log(searchInput);
   const [searchState, setSearchState] = useState<TfetchStatus>({
     status: "idle",
   });
 
+  // useCallback, this function should only be redefined if any of its dependencies change
   const search = useCallback(async () => {
     // todo: manipulate history
 
@@ -58,19 +64,20 @@ export default () => {
         error: "something went wrong, try again",
       });
     }
-  }, [params.searchText]);
+  }, [params.searchText]); // 1 dependency, searchText
 
   useEffect(() => {
     search();
-  }, [search]);
+  }, [search]); // run this effect once, and run it again if the search function changes, run this effect again
 
   useEffect(() => {
-    if (params.searchText !== searchInput) {
+    if (params.searchText !== searchInput && params.searchText !== undefined) {
       setsearchInput(params.searchText);
     }
-  }, [params.searchText, searchInput]);
+  }, [params.searchText, searchInput]); // if params.searchText or search
 
   const addToHistory = () => {
+    console.log(searchInput);
     history.push(`/discover/${encodeURIComponent(searchInput)}`);
   };
 
