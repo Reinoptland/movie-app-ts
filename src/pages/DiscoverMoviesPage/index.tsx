@@ -49,10 +49,10 @@ export default () => {
 
     if (params.searchText === "" || params.searchText === undefined) return;
 
-    dispatch(appLoading);
     setSearchState({ status: "loading" });
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
+    dispatch(appLoading);
 
     try {
       const response = await searchMoviesByTitle(params.searchText);
