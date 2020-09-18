@@ -8,6 +8,7 @@ import "./style.css";
 import { TMovieSummary } from "../../entities/movies";
 import { searchMoviesByTitle } from "../../services/omdb";
 import DiscoverResult from "./DiscoverResult";
+import { searchMoviesThunk } from "../../store/movies/actions";
 
 export type TfetchStatus =
   | {
@@ -33,11 +34,9 @@ export default () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const params = useParams<TParams>();
-  console.log(params);
   const [searchInput, setsearchInput] = useState(
     params.searchText === undefined ? "" : params.searchText
   );
-  console.log(searchInput);
 
   const [searchState, setSearchState] = useState<TfetchStatus>({
     status: "idle",
@@ -52,7 +51,7 @@ export default () => {
     setSearchState({ status: "loading" });
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    dispatch(appLoading);
+    // dispatch(appLoading);
 
     try {
       const response = await searchMoviesByTitle(params.searchText);
@@ -69,8 +68,12 @@ export default () => {
       });
     }
 
-    dispatch(appDoneLoading);
+    // dispatch(appDoneLoading);
   }, [params.searchText]); // 1 dependency, searchText
+
+  useEffect(() => {
+    dispatch(searchMoviesThunk(params.searchText));
+  }, [dispatch, params.searchText]);
 
   useEffect(() => {
     search();

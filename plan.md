@@ -39,3 +39,8 @@ Dynamic routing -> andere data laten op basis van url
     - Reducer logica -> Hoe moet een APP_LOADING actie worden de state veranderen
     - Selector schrijven om de state van de app aan een component door te geven
     - Appstate in componenten gebruiken
+
+## As a developer I don't want my app to refetch data it already has, so we don't sponsor AWS needlessly
+
+- [] Fetching logica in een actie neerzetten en uit het component halen (seperation of concerns)
+- [] Zoekopdrachten & resultaten opslaan in redux en niet opnieuw fetchen
