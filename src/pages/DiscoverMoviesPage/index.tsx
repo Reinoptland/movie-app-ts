@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { appLoading } from "../../store/appState/actions";
+import { appDoneLoading, appLoading } from "../../store/appState/actions";
 import { useDispatch } from "react-redux";
 
 import "./style.css";
@@ -68,6 +68,8 @@ export default () => {
         error: "something went wrong, try again",
       });
     }
+
+    dispatch(appDoneLoading);
   }, [params.searchText]); // 1 dependency, searchText
 
   useEffect(() => {

@@ -6,4 +6,12 @@ type TappLoading = {
 
 export const appLoading: TappLoading = { type: APP_LOADING };
 
-export type TAppStateAction = TappLoading;
+export const APP_DONE_LOADING = "APP_DONE_LOADING";
+
+type TappDoneLoading = {
+  type: "APP_DONE_LOADING";
+};
+
+export const appDoneLoading: TappDoneLoading = { type: APP_DONE_LOADING };
+
+export type TAppStateAction = TappLoading | TappDoneLoading;
