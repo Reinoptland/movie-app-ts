@@ -15,6 +15,7 @@ export default () => {
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const response = await getMovieById(params.imdbID);
       if (response.Response === "True") {
         setDetails(response);

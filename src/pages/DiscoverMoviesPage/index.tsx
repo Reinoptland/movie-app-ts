@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import { useHistory, useParams } from "react-router-dom";
 
 import "./style.css";
 
@@ -22,19 +23,35 @@ export type TfetchStatus =
       error: string;
     };
 
+type TParams = {
+  searchText: string;
+};
+
 export default () => {
-  const [searchText, setSearchText] = useState("");
+  const history = useHistory();
+  const params = useParams<TParams>();
+  console.log(params);
+  const [searchInput, setsearchInput] = useState(
+    params.searchText === undefined ? "" : params.searchText
+  );
+
+  console.log(searchInput);
   const [searchState, setSearchState] = useState<TfetchStatus>({
     status: "idle",
   });
 
-  const search = async () => {
+  // useCallback, this function should only be redefined if any of its dependencies change
+  const search = useCallback(async () => {
+    // todo: manipulate history
+
+    if (params.searchText === "" || params.searchText === undefined) return;
+
     setSearchState({ status: "loading" });
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     try {
-      const response = await searchMoviesByTitle(searchText);
+      const response = await searchMoviesByTitle(params.searchText);
 
       if (response.Response === "True") {
         setSearchState({ status: "success", data: response.Search });
@@ -47,6 +64,21 @@ export default () => {
         error: "something went wrong, try again",
       });
     }
+  }, [params.searchText]); // 1 dependency, searchText
+
+  useEffect(() => {
+    search();
+  }, [search]); // run this effect once, and run it again if the search function changes, run this effect again
+
+  useEffect(() => {
+    if (params.searchText !== searchInput && params.searchText !== undefined) {
+      setsearchInput(params.searchText);
+    }
+  }, [params.searchText, searchInput]); // if params.searchText or search
+
+  const addToHistory = () => {
+    console.log(searchInput);
+    history.push(`/discover/${encodeURIComponent(searchInput)}`);
   };
 
   return (
@@ -55,10 +87,10 @@ export default () => {
         <h1>Discover some movies!</h1>
         <p>
           <input
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
+            value={searchInput}
+            onChange={(e) => setsearchInput(e.target.value)}
           />
-          <button onClick={search}>Search</button>
+          <button onClick={addToHistory}>Search</button>
         </p>
       </div>
       <DiscoverResult status={searchState} />

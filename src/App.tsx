@@ -13,7 +13,7 @@ function App() {
       <NavBar />
       <Switch>
         <Route path="/movies/:imdbID" component={MovieDetailPage} />
-        <Route path="/discover" component={DiscoverMoviesPage} />
+        <Route path="/discover/:searchText?" component={DiscoverMoviesPage} />
         <Route path="/about" component={AboutPage} />
         <Route path="/" component={HomePage} />
       </Switch>
