@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState, useCallback } from "react";
+import { useHistory, useParams } from "react-router-dom";
 
 import "./style.css";
 
@@ -23,23 +23,27 @@ export type TfetchStatus =
       error: string;
     };
 
+type TParams = {
+  searchText: string;
+};
+
 export default () => {
   const history = useHistory();
-  const [searchText, setSearchText] = useState("");
+  const params = useParams<TParams>();
   const [searchState, setSearchState] = useState<TfetchStatus>({
     status: "idle",
   });
 
-  const search = async () => {
+  const search = useCallback(async () => {
     // todo: manipulate history
+    if (params.searchText === "" || params.searchText === undefined) return;
 
-    history.push(`/discover/${encodeURIComponent(searchText)}`);
     setSearchState({ status: "loading" });
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     try {
-      const response = await searchMoviesByTitle(searchText);
+      const response = await searchMoviesByTitle(params.searchText);
 
       if (response.Response === "True") {
         setSearchState({ status: "success", data: response.Search });
@@ -52,7 +56,11 @@ export default () => {
         error: "something went wrong, try again",
       });
     }
-  };
+  }, [params.searchText]);
+
+  useEffect(() => {
+    search();
+  }, [search]);
 
   return (
     <div>
@@ -60,8 +68,10 @@ export default () => {
         <h1>Discover some movies!</h1>
         <p>
           <input
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
+            value={params.searchText || ""}
+            onChange={(e) =>
+              history.push(`/discover/${encodeURIComponent(e.target.value)}`)
+            }
           />
           <button onClick={search}>Search</button>
         </p>
