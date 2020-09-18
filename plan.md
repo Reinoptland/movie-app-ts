@@ -12,8 +12,9 @@ Dynamic routing -> andere data laten op basis van url
 
 ## Feature request: As a user I want share a link to my search results
 
-- [] Route parameter toevoegen aan die discover pagina
-- [] wanneer de zoekterm verandert, moet de url mee veranderen
+- [x] Route parameter toevoegen aan die discover pagina -> moet optioneel zijn dus `/discover/:searchText?`
+- [x] wanneer de zoekterm verandert, moet de url mee veranderen
   - useHistory -> history.push(url)
-- [] wanner de pagina geladen wordt, moeten we een zoekopdracht uitvoeren met de query uit de url
+- [] wanneer de pagina geladen wordt, moeten we een zoekopdracht uitvoeren met de query uit de url
   - useParams
+  - useEffect

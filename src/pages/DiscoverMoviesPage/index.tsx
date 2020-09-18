@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 import "./style.css";
 
@@ -23,12 +24,16 @@ export type TfetchStatus =
     };
 
 export default () => {
+  const history = useHistory();
   const [searchText, setSearchText] = useState("");
   const [searchState, setSearchState] = useState<TfetchStatus>({
     status: "idle",
   });
 
   const search = async () => {
+    // todo: manipulate history
+
+    history.push(`/discover/${encodeURIComponent(searchText)}`);
     setSearchState({ status: "loading" });
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
