@@ -7,7 +7,10 @@ export const SEARCH_SUCCESS = "SEARCH_SUCCESS";
 
 type TsearchSuccess = {
   type: "SEARCH_SUCCESS";
-  payload: TMovieSummary[];
+  payload: {
+    query: string;
+    summaries: TMovieSummary[];
+  };
 };
 
 export type TMoviesActions = TsearchSuccess;
@@ -22,14 +25,16 @@ export const searchMoviesThunk = (searchText: string) => {
     dispatch(appLoading);
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    // todo fetch data
+
     const result = await searchMoviesByTitle(searchText);
-    console.log(result);
 
     if (result.Response === "True") {
       const action: TsearchSuccess = {
         type: SEARCH_SUCCESS,
-        payload: result.Search,
+        payload: {
+          query: searchText,
+          summaries: result.Search,
+        },
       };
 
       dispatch(action);
