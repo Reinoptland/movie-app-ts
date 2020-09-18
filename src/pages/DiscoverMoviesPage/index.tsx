@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { appLoading } from "../../store/appState/actions";
+import { useDispatch } from "react-redux";
 
 import "./style.css";
 
@@ -28,6 +30,7 @@ type TParams = {
 };
 
 export default () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const params = useParams<TParams>();
   console.log(params);
@@ -46,6 +49,7 @@ export default () => {
 
     if (params.searchText === "" || params.searchText === undefined) return;
 
+    dispatch(appLoading);
     setSearchState({ status: "loading" });
 
     await new Promise((resolve) => setTimeout(resolve, 1000));

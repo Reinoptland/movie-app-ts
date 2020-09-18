@@ -27,9 +27,15 @@ Dynamic routing -> andere data laten op basis van url
 
 ## Todo:
 
-- [] Setup
+- [x] Setup
   - deps installeren
   - store initializeren
   - mappen structuur
 - [] Appstate
-  - Loading & Error
+  - Loading
+    - [x] Store typen
+    - Actie maken: APP_LOADING
+    - Actie moeten `dispatchen`
+    - Reducer logica -> Hoe moet een APP_LOADING actie worden de state veranderen
+    - Selector schrijven om de state van de app aan een component door te geven
+    - Appstate in componenten gebruiken
