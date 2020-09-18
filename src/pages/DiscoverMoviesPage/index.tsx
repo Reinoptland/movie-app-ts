@@ -37,8 +37,8 @@ export default () => {
   const [searchInput, setsearchInput] = useState(
     params.searchText === undefined ? "" : params.searchText
   );
-
   console.log(searchInput);
+
   const [searchState, setSearchState] = useState<TfetchStatus>({
     status: "idle",
   });
@@ -77,13 +77,10 @@ export default () => {
   }, [search]); // run this effect once, and run it again if the search function changes, run this effect again
 
   useEffect(() => {
-    if (params.searchText !== searchInput && params.searchText !== undefined) {
-      setsearchInput(params.searchText);
-    }
-  }, [params.searchText, searchInput]); // if params.searchText or search
+    setsearchInput(params.searchText || "");
+  }, [params.searchText]); // if params.searchText
 
   const addToHistory = () => {
-    console.log(searchInput);
     history.push(`/discover/${encodeURIComponent(searchInput)}`);
   };
 
